@@ -1,0 +1,19 @@
+body,table,tr{
+	margin:0px;
+	padding:0px;
+	font-size:12px;
+	text-align:center;
+}
+.data_table{
+	width:90%;
+	border-collapse:collapse;
+	margin:0px auto;
+}
+
+.data_table .head_tr{
+	font-weight:bold;
+	background-color:#ccc;
+}
+.data_table tr{
+	height:20px;
+}

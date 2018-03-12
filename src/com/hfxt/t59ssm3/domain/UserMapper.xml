@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hfxt.t59ssm3.dao.UserDao">
+	
+	<select id="getUserByUsername" parameterType="String" resultMap="rm_user">
+		select * from tb_user where username=#{username}
+	</select>
+	
+	<select id="getAllUsers" resultMap="rm_user">
+	    select tu.*,tr.rolename rolename from tb_user tu inner join tb_role tr on tu.role_id=tr.id order by createtime desc
+		<!-- select * from tb_user -->
+	</select>
+	
+	<delete id="deleteUser" parameterType="int">
+		delete from tb_user where id=#{id}
+	</delete>
+	
+	<insert id="addUser" parameterType="user">
+		<!--//针对oracle数据库的序列
+		<selectKey keyProperty="id" resultType="int" order="BEFORE">
+			select seq_user.next from dual 这个是开发人员自己起的一个"序列"的名字,序列一般用于生成id号
+		</selectKey> -->
+		
+		insert into tb_user(username,password,status,createtime,role_id)
+		values(#{username},#{password},#{status},now(),#{roleId})
+	</insert>
+	
+	<select id="getUserInfoById" parameterType="int" resultMap="rm_user">
+	    select * from tb_user where id=#{id}
+	</select>
+	
+	<update id="updateUser" parameterType="user">
+   <!-- update tb_user set
+		username=#{username},
+		password=#{password},
+		status=#{status},
+		role_id=#{roleId}
+		where id=#{id} -->
+		
+		update tb_user
+		<set>
+			<if test="username!=null and username!=''">  <!-- 这行中username指的是参数user 的属性 -->
+				username=#{username},
+			</if>
+			<if test="password!=null and password!=''">
+				password=#{password},
+			</if>
+			<if test="status!=null and status!=''">
+				status=#{status},
+			</if>
+			<if test="roleId!=null and roleId!=''">
+				role_id=#{roleId},
+			</if>
+			<if test="1==1">
+			    createtime=now(),
+			</if>
+		</set>
+		where id=#{id}
+	</update>
+	
+	<select id="getUserListByConditon" parameterType="user" resultMap="rm_user">
+	<!-- select * from tb_user -->
+	    select tu.*,tr.rolename rolename from tb_user tu inner join tb_role tr on tu.role_id=tr.id
+		<where>
+			<if test="username!=null and username!=''">
+				and username like '%${username}%'
+			</if>
+			<if test="password!=null and password!=''">
+				and password=#{password}
+			</if>
+			<if test="status!=null and status!=''">
+				and status=#{status}
+			</if>
+		</where>
+		        order by createtime desc
+	</select>
+	
+	<select id="getUserListByPage"  resultMap="rm_user">
+	    <!-- select * from tb_user -->
+	    select tu.*,tr.rolename rolename from tb_user tu inner join tb_role tr on tu.role_id=tr.id
+		<where>
+			<if test="condition.username!=null and condition.username!=''">
+				and username like '%${condition.username}%'
+			</if>
+			<if test="condition.password!=null and condition.password!=''">
+				and password=#{condition.password}
+			</if>
+			<if test="condition.status!=null and condition.status!=''">
+				and status=#{condition.status}
+			</if>
+		</where>
+		        order by createtime desc limit #{page.startPos},#{page.pageSize}
+	</select>
+	
+	<select id="getTotalCount" resultType="int">
+	    select count(1) totalCount from tb_user
+	    <where>
+			<if test="condition.username!=null and condition.username!=''">
+				and username like '%${condition.username}%'
+			</if>
+			<if test="condition.password!=null and condition.password!=''">
+				and password=#{condition.password}
+			</if>
+			<if test="condition.status!=null and condition.status!=''">
+				and status=#{condition.status}
+			</if>
+		</where>
+	</select>
+	
+	
+	
+	<resultMap type="user" id="rm_user">
+		<id column="id" property="id"/>
+		<result column="role_id" property="roleId"/>
+		<!-- <result column="rolename" property="rolename"/>
+		<collection property="role" column="role_id" select="com.hfxt.t59ssm3.dao.RoleDao.getRoleById"></collection> -->
+	</resultMap> 
+	
+	<!-- 	
+	<select id="getUsers" parameterType="user" resultMap="rm_user">
+		select * from tb_user where 1=1
+		<if test="username!=null">
+			and username like '%${username}%'
+		</if>
+		<if test="password!=null">
+			and password=#{password}
+		</if>
+		<if test="status!=null">
+			and status=#{status}
+		</if>
+		
+		select * from tb_user
+		<where>
+			<if test="username!=null">
+				and username like '%${username}%'
+			</if>
+			<if test="password!=null">
+				and password=#{password}
+			</if>
+			<if test="status!=null">
+				and status=#{status}
+			</if>
+		</where>
+	</select>
+	
+	<resultMap type="user" id="rm_user">
+		<id column="id" property="id"/>
+		<result column="role_id" property="roleId"/>
+		<result column="rolename" property="rolename"/>
+		<collection property="role" column="role_id" select="com.hfxt.dao.RoleDao.getRoleById"></collection>
+	</resultMap> -->
+		
+</mapper>
