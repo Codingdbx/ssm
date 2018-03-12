@@ -8,3 +8,19 @@
 
 ### 项目实现效果：
 ![Image text](https://github.com/Codingdbx/ssm/raw/master/imageshot/1.jpg)
+
+### 增加用户功能
+![Image text](https://github.com/Codingdbx/ssm/raw/master/imageshot/2.jpg)
+
+### 修改用户功能
+
+![Image text](https://github.com/Codingdbx/ssm/raw/master/imageshot/3.jpg)
+
+
+### 删除用户功能
+
+![Image text](https://github.com/Codingdbx/ssm/raw/master/imageshot/5.jpg)
+
+### 条件查询功能
+
+![Image text](https://github.com/Codingdbx/ssm/raw/master/imageshot/4.jpg)
